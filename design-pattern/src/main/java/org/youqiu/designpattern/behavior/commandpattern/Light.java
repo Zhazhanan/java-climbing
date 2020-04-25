@@ -1,4 +1,4 @@
-package org.youqiu.designpattern.commandpattern;
+package org.youqiu.designpattern.behavior.commandpattern;
 
 public class Light {
     public void on() {

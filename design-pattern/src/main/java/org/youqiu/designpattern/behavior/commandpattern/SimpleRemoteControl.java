@@ -1,4 +1,4 @@
-package org.youqiu.designpattern.commandpattern;
+package org.youqiu.designpattern.behavior.commandpattern;
 
 /*遥控器*/
 public class SimpleRemoteControl {

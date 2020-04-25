@@ -1,4 +1,4 @@
-package org.youqiu.designpattern.commandpattern;
+package org.youqiu.designpattern.behavior.commandpattern;
 
 /*开电灯命令*/
 public class LightOnCommand implements Command {

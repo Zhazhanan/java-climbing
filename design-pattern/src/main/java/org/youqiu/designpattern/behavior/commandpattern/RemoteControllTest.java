@@ -1,4 +1,4 @@
-package org.youqiu.designpattern.commandpattern;
+package org.youqiu.designpattern.behavior.commandpattern;
 
 /*命令模式的客户端*/
 public class RemoteControllTest {
