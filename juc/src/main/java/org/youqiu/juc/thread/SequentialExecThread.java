@@ -1,4 +1,4 @@
-package org.youqiu.juc;
+package org.youqiu.juc.thread;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -32,7 +32,7 @@ public class SequentialExecThread extends Thread {
         // 通过countdownlatch实现
         comeByCountDownLatch();
         /// 通过thread.join实现
-        comeByJoin();
+//        comeByJoin();
     }
 
     public static void comeByJoin() {
@@ -47,12 +47,17 @@ public class SequentialExecThread extends Thread {
     public static void comeByCountDownLatch() throws InterruptedException {
         for (int j = 0; j < 10; j++) {
             CountDownLatch countDownLatch = new CountDownLatch(1);
-            final int i = j;
             new Thread(() -> {
-                System.out.println("-----------" + i);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(Thread.currentThread().getName());
                 countDownLatch.countDown();
-            }).start();
+            }, "thread-" + j).start();
             countDownLatch.await();
         }
     }
+
 }
