@@ -1,4 +1,4 @@
-package org.youqiu.juc;
+package org.youqiu.juc.lock;
 
 /**
  * Description
