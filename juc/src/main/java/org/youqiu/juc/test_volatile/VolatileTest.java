@@ -7,7 +7,9 @@ package org.youqiu.juc.test_volatile;
  **/
 public class VolatileTest {
 
-    /*验证volatile的可见性*/
+    /**
+     * 修改VolatileVar对象里的变量 来验证volatile的可见性
+     */
     public static void main(String[] args) {
         VolatileVar volatileVar = new VolatileVar();
 
