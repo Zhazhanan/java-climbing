@@ -50,5 +50,22 @@ public class LambdaTest {
                 Collectors.toList());
         IntStream.rangeClosed(0, 10).boxed().collect(Collectors.toList());
         numbers.forEach(System.out::print);
+
+        System.out.println("-------------"+test(4));
     }
+
+    public static int test(int n){
+        if(n<=2){
+            return n;
+        }
+        int i1 = 1;
+        int i2 = 2;
+        for(int i=3;i<=n;i++){
+            int temp = i1+i2;
+            i1 = i2;
+            i2 = temp;
+        }
+        return i2;
+    }
+
 }

@@ -3,7 +3,8 @@ package org.youqiu.designpattern.creational.simplefactorypattern;
 /**
  * Description
  * <br> Created by WangKun on 2020/05/11
- * <br> 工厂模式 定义了一个创建对象的接口，但由子类决定要实例化哪个类。工厂方法让类把实例化推迟到子类
+ * <br>  简单工厂模式实现了生成产品类的代码跟客户端代码分离
+ * 问题来了，优秀的java代码是符合“开放-封闭”原则的，也就是说对扩展开发，对修改关闭
  **/
 public class SimpleFactory {
 

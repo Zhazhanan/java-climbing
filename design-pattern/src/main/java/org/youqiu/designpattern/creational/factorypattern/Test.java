@@ -9,7 +9,7 @@ import org.youqiu.designpattern.creational.simplefactorypattern.Phone;
  **/
 public class Test {
     public static void main(String[] args) {
-        AbstractFactory hwFactory = new HuaWeiFactory();
+        Factory hwFactory = new HuaWeiFactory();
         IPhoneFactory iPhoneFactory = new IPhoneFactory();
         Phone phone = hwFactory.makePhone();
         Phone phone1 = iPhoneFactory.makePhone();
