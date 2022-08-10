@@ -15,10 +15,10 @@ public class WkThreadFactory implements ThreadFactory {
     private final AtomicInteger threadNumber = new AtomicInteger(1);
     private String namePrefix;
 
-    public WkThreadFactory(String namePrefix) {
+    public WkThreadFactory(String name) {
         SecurityManager s = System.getSecurityManager();
         group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
-        namePrefix = "-Pool-" + poolNumber.getAndIncrement() + "-thread-";
+        this.namePrefix = name + "-Pool-" + poolNumber.getAndIncrement() + "-thread-";
     }
 
     @Override
