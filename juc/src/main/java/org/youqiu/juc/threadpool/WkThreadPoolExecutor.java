@@ -1,5 +1,7 @@
 package org.youqiu.juc.threadpool;
 
+import lombok.SneakyThrows;
+
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
@@ -35,7 +37,16 @@ public class WkThreadPoolExecutor {
      * //ThreadPoolExecutor.DiscardOldestPolicy：丢弃队列最前面的任务，然后重新尝试执行任务（重复此过程）
      * //ThreadPoolExecutor.CallerRunsPolicy：由调用线程处理该任务
      */
-    private static RejectedExecutionHandler handler = new ThreadPoolExecutor.AbortPolicy();
+    private static RejectedExecutionHandler handler = new WkRejectedExecutionHandler();
+
+    static class WkRejectedExecutionHandler implements RejectedExecutionHandler{
+
+        @SneakyThrows
+        @Override
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+            executor.getQueue().put(r);
+        }
+    }
 
     public static ThreadPoolExecutor init() {
         return new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
