@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <contextName>logback</contextName>
+    <property name="APP_NAME" value="gRPC-client"/>
+    <property name="LOG_PATH" value="./logs"/>
+    <property name="HIS_LOG_PATH" value="./logs/his"/>
+    <property name="LOG_SPLIT_SIZE" value="100MB"/>
+    <property name="CONSOLE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%boldMagenta(%X{tid})] [%thread] %boldGreen(%-5level) %cyan(%logger{36}) -[%boldMagenta(%X{sw_ctx})] -%c:%L:%msg%n"/>
+    <property name="STDOUT_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{tid}] [%thread] %-5level %logger{36} -[%X{sw_ctx}] -%c:%L:%msg%n"/>
+
+    <!--输出到控制台-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.mdc.TraceIdMDCPatternLogbackLayout">
+                <Pattern>${CONSOLE_PATTERN}</Pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <!-- Skywalking v8.4.0提供 -->
+    <appender name="RPC" class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.log.GRPCLogClientAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.mdc.TraceIdMDCPatternLogbackLayout">
+                <Pattern>${STDOUT_PATTERN}</Pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <!--配置输出到文件 -->
+    <appender name="FILE_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${STDOUT_PATTERN}</pattern>
+        </encoder>
+        <!--日志滚动策略，这里配置根据大小和日期自动滚动 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 首先按照每天滚动，根据日志放到不同文件夹中，最后根据大小进行滚动分割 -->
+            <fileNamePattern>${LOG_PATH}/${APP_NAME}-%d{yyyy-MM-dd,UTC}.%i.log</fileNamePattern>
+            <!-- 每个日志文件至少 100MB,保存30天,但是所有日志占用空间最大不能超过 20GB，超过后清理较旧的日志 -->
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>20GB</totalSizeCap>
+            <!--启动时候清理日志-->
+            <cleanHistoryOnStart>false</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+    <!--配置输出到文件 错误日志 -->
+    <appender name="FILE_ERROR_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>${STDOUT_PATTERN}</pattern>
+        </encoder>
+
+        <!--日志滚动策略，这里配置根据大小和日期自动滚动 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 首先按照每天滚动，根据日志放到不同文件夹中，最后根据大小进行滚动分割 -->
+            <fileNamePattern>${LOG_PATH}/%d{yyyy-MM-dd,aux}/${APP_NAME}-error-%d{yyyy-MM-dd,UTC}.%i.log</fileNamePattern>
+            <!-- 每个日志文件至少 100MB,保存30天,但是所有日志占用空间最大不能超过 20GB，超过后清理较旧的日志 -->
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>20GB</totalSizeCap>
+            <!--启动时候清理日志-->
+            <cleanHistoryOnStart>false</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="tansun.creditx" level="debug" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="RPC"/>
+        <appender-ref ref="FILE_LOG"/>
+        <appender-ref ref="FILE_ERROR_LOG"/>
+    </logger>
+
+    <root level="debug">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="RPC"/>
+        <appender-ref ref="FILE_LOG"/>
+        <appender-ref ref="FILE_ERROR_LOG"/>
+    </root>
+
+</configuration>

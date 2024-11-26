@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: creditx-demo
+  profiles:
+    active: local
+#    active: test

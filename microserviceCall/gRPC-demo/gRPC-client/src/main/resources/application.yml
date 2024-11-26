@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: gRPC-client
+  profiles:
+    active: local
+#    active: test

@@ -1,0 +1,80 @@
+server:
+  port: 10014
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      #        server-addr: 10.7.12.192:8848
+      config:
+        server-addr: 127.0.0.1:8848
+        #        server-addr: 10.7.12.192:8848
+        namespace: public  # 配置的命名空间，通常是默认的 public
+        group: DEFAULT_GROUP  # 配置分组
+        file-extension: yaml  # 配置文件扩展名
+        username: 'nacos'
+        password: 'nacos'
+  config:
+    import: optional:nacos:gateway-dev.yaml
+
+# ---------- 以下配置是放在配置中心 ----------
+## url白名单
+#url:
+#  whitelist:
+#    - /discovery/get
+#    - /test
+#
+## 网关路由
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: customerID
+#          uri: lb://nacos-customer
+#          predicates:
+#            - Path=/api/**
+#          filters:
+#            - StripPrefix=1
+#            - name: IpFilter
+#              args:
+#                whiteList: 10.7.12.192,127.0.0.1
+#        - id: producerID
+#          uri: lb://nacos-producer
+#          predicates:
+#            - Path=/doc/**
+#          filters:
+#            - StripPrefix=1
+#            - name: IpFilter
+#              args:
+#                whiteList: 10.7.12.192,127.0.0.1
+#
+## 检查端口外漏
+#management:
+#  endpoint:
+#    health:
+#      show-details: always
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+#
+## openai3文档
+#knife4j:
+#  gateway:
+#    enabled: true
+#    # 指定服务发现的模式聚合微服务文档，并且是默认`default`分组
+#    strategy: discover
+#    discover:
+#      enabled: true
+#      # 指定版本号(Swagger2|OpenAPI3)
+#      version : openapi3
+#      # 需要排除的微服务(eg:网关服务)
+##      excluded-services:
+##        - gateway-service

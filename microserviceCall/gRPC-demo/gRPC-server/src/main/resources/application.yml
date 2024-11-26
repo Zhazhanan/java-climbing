@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: gRPC-server
+  profiles:
+    active: local
+#    active: test

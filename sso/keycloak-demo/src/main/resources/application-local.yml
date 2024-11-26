@@ -1,0 +1,44 @@
+server:
+  port: 10016
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: 123456
+    key-store-type: PKCS12
+    key-alias: myapp
+
+logging:
+  level:
+    org.springframework.security: debug
+    org.springframework.security.oauth2: DEBUG
+    org.keycloak: debug
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: localClient
+            client-secret: 3YIRcq55AurugsfF6lAnXup9xGx8DiuD
+            scope: openid, profile, email
+            authorization-grant-type: authorization_code
+            redirect-uri: https://192.168.92.241:10016/login/oauth2/code/keycloak # 注意本地ip，同时要哦修改keycloak客户端重定向的url
+        provider:
+          keycloak:
+            issuer-uri: https://10.7.12.200:8443/realms/springbootLocal
+
+
+# 启用了Prometheus端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    export:
+      prometheus:
+        enabled: true
+  server:
+    port: 9090
