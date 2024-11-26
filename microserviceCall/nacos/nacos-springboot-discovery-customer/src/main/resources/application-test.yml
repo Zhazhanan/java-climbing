@@ -1,0 +1,40 @@
+server:
+  port: 10012
+spring:
+  application:
+    name: nacos-customer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.7.12.192:8848
+      config:
+        server-addr: 10.7.12.192:8848
+        namespace: public  # 配置的命名空间，通常是默认的 public
+        group: DEFAULT_GROUP  # 配置分组
+        file-extension: yaml  # 配置文件扩展名
+        username: 'nacos'
+        password: 'nacos'
+  config:
+    import: optional:nacos:nacos-customer-dev.yaml
+
+logging:
+  level:
+    com.alibaba.cloud.nacos.configdata: debug
+
+# ---------- 以下配置是放在配置中心 ----------
+#swagger:
+#  enable: true
+#  project-leader: tansun
+#  leader-email: 123@email
+#  application-name: nacos-customer
+#  application-version: 1.0
+#  application-description: nacos-customer开发环境
+#
+#management:
+#  endpoint:
+#    health:
+#      show-details: always
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
