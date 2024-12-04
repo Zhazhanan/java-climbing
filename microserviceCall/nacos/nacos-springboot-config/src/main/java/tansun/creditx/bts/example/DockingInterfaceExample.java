@@ -3,7 +3,6 @@ package tansun.creditx.bts.example;
 import com.alibaba.cloud.commons.lang.StringUtils;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.alibaba.nacos.api.config.ConfigService;
-import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import tansun.creditx.bts.config.NacosConfigListener;
 
 /**
  * Example of docking with Nacos interface.
@@ -33,6 +30,9 @@ public class DockingInterfaceExample {
 
     @Autowired
     private NacosConfigManager nacosConfigManager;
+
+    @Autowired
+    private NacosConfigListener nacosConfigListener;
 
     /**
      * Get configuration information.
@@ -102,18 +102,8 @@ public class DockingInterfaceExample {
         if (StringUtils.isEmpty(group)) {
             group = DEFAULT_GROUP;
         }
-        ConfigService configService = nacosConfigManager.getConfigService();
-        configService.addListener(dataId, group, new Listener() {
-            @Override
-            public Executor getExecutor() {
-                return Executors.newSingleThreadExecutor();
-            }
 
-            @Override
-            public void receiveConfigInfo(String configInfo) {
-                logger.info("[Listen for configuration changes]:{}", configInfo);
-            }
-        });
+        nacosConfigListener.listenForConfigChanges(dataId, group);
         return "Add Lister successfully!";
     }
 }

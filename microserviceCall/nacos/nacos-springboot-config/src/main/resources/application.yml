@@ -15,8 +15,25 @@ spring:
         username: 'nacos'
         password: 'nacos'
   config:
-    import: optional:nacos:nacos-config-example.properties
+    import: optional:nacos:nacos-config-example
 
 logging:
   level:
-    com.alibaba.cloud.nacos.configdata: debug
+    com.alibaba.cloud.nacos.configdata: info
+    
+swagger:
+  configurations:
+    enable: true # 是否自动刷新swagger开关
+    list:
+      - dataId: "nacos-config-example"
+        group: "DEFAULT_GROUP"
+        enable: true
+      - dataId: "gateway-dev.yaml"
+        group: "DEFAULT_GROUP"
+        enable: true
+      - dataId: "nacos-producer-dev.yaml"
+        group: "DEFAULT_GROUP"
+        enable: true
+      - dataId: "nacos-customer-dev.yaml"
+        group: "DEFAULT_GROUP"
+        enable: true

@@ -1,11 +1,9 @@
-package tansun.creditx.bts.example;
+package tansun.creditx.bts.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 
 @ConfigurationProperties(prefix = "spring.cloud.nacos.config")
-@Component
 public class NacosConfigInfo {
 
     /**
